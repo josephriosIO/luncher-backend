@@ -14,7 +14,7 @@ describe("server endpoints", () => {
     });
   });
   describe("school endpoints", () => {
-    describe("POST /", () => {
+    describe("Register POST /", () => {
       let data = {
         name: "Schoolcdv Name",
         username: `test${Math.random()}`,
@@ -42,6 +42,19 @@ describe("server endpoints", () => {
       it("should return application/json type", async () => {
         const response = await request(server).post("/api/schools/register");
         expect(response.type).toEqual("application/json");
+      });
+    });
+    describe("Login Post /", () => {
+      it("should return an 200 okay status", async () => {
+        const data = {
+          name: "Diablo Valley College",
+          username: "diablostaff1",
+          password: "password"
+        };
+        const response = await request(server)
+          .post("/api/schools/login")
+          .send(data);
+        expect(response.status).toBe(200);
       });
     });
   });
