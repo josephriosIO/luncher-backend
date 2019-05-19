@@ -5,8 +5,16 @@ exports.seed = function(knex, Promise) {
     .then(function() {
       // Inserts seed entries
       return knex("schools").insert([
-        { name: "Lambda School" },
-        { name: "Diablo Valley College" }
+        {
+          name: "Lambda School",
+          username: "lambdastaff1",
+          password: "password"
+        },
+        {
+          name: "Diablo Valley College",
+          username: "diablostaff1",
+          password: "password"
+        }
       ]);
     });
 };

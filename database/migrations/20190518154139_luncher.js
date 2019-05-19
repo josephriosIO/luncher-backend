@@ -5,10 +5,13 @@ exports.up = function(knex, Promise) {
     .createTable("schools", tbl => {
       tbl.increments();
 
+      tbl.string("name", 128).notNullable();
+
       tbl
-        .string("name", 128)
+        .string("username", 255)
         .notNullable()
         .unique();
+      tbl.string("password", 255).notNullable();
     })
 
     .createTable("school_profile", tbl => {
