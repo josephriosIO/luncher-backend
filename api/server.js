@@ -5,7 +5,8 @@ const cors = require("cors");
 const server = express();
 
 const registerRoute = require("../routes/auth/Register");
-const profileRoute = require("../route/profiles/Profile");
+const profileRoute = require("../routes/profiles/Profile");
+const donationRoute = require("../routes/donations/Donate");
 
 server.use(helmet());
 server.use(cors());
@@ -13,6 +14,7 @@ server.use(express.json());
 
 server.use("/api/schools", registerRoute);
 server.use("/api/schools/profile", profileRoute);
+server.use("/api/donate", donationRoute);
 
 server.get("/", (req, res) => {
   res.json({ server: "UP" });
