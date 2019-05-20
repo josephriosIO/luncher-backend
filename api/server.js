@@ -12,7 +12,7 @@ server.use(helmet());
 server.use(cors());
 server.use(express.json());
 
-server.use("/api/schools", registerRoute);
+server.use("/api/auth", registerRoute);
 server.use("/api/schools/profile", profileRoute);
 server.use("/api/donate", donationRoute);
 

@@ -24,6 +24,13 @@ exports.up = function(knex, Promise) {
 
       tbl.boolean("funding").notNullable();
 
+      tbl.integer("balance");
+
+      tbl
+        .string("uid", 35)
+        .unique()
+        .notNullable();
+
       tbl
         .integer("school_id")
         .unsigned()
@@ -39,6 +46,21 @@ exports.up = function(knex, Promise) {
       tbl.increments();
 
       tbl.string("name", 128);
+    })
+
+    .createTable("transactions", table => {
+      table.increments();
+
+      table
+        .string("uid")
+        .unsigned()
+        .notNullable()
+        .references("uid")
+        .inTable("school_profile")
+        .onDelete("CASCADE");
+
+      table.integer("donation").defaultTo(0);
+      table.timestamp("created_at").defaultTo(knex.fn.now());
     });
 };
 
@@ -47,5 +69,6 @@ exports.down = function(knex, Promise) {
   return knex.schema
     .dropTableIfExists("school_profile")
     .dropTableIfExists("schools")
-    .dropTableIfExists("donors");
+    .dropTableIfExists("donors")
+    .dropTableIfExists("transactions");
 };

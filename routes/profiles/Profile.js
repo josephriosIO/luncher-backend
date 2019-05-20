@@ -17,7 +17,7 @@ router.post("/", async (req, res) => {
 });
 
 //get certain profile by id
-router.get("/:id", authenticate, async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const profile = await db.findById(id);
