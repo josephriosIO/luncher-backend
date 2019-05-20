@@ -65,7 +65,7 @@ Successful Return
 ```
 
 axios
-    .post("https://luncher-1.herokuapp.com/api/schools/profile/{id}")
+    .post("https://luncher-1.herokuapp.com/api/donate/${id}")
     .then(res => {
         console.log(res.data)
     })
@@ -160,7 +160,7 @@ const creds = {
 }
 
 axios
-    .post(`https://luncher-1.herokuapp.com/api/schools/profile/${id}`, creds)
+    .put(`https://luncher-1.herokuapp.com/api/schools/profile/${id}`, creds)
     .then(res => {
         console.log(res.data)
     })
@@ -181,4 +181,96 @@ Successful Return
   "uid": "shgksngsng",
   "school_id": 1
 }
+```
+
+#### give donation
+
+```
+const creds = {
+	uid: '', // get from uuid required
+  donation: 10// required
+}
+
+axios
+    .post(`https://luncher-1.herokuapp.com/api/donate/donation/${id}`, creds)
+    .then(res => {
+        console.log(res.data)
+    })
+    .catch(err => {
+        console.log(err)
+    });
+```
+
+Successful Return
+
+```
+{
+  "message": "Donated $10."
+}
+```
+
+#### get transaction by id
+
+```
+
+axios
+    .get(`https://luncher-1.herokuapp.com/api/donate/transaction/${id}`)
+    .then(res => {
+        console.log(res.data)
+    })
+    .catch(err => {
+        console.log(err)
+    });
+```
+
+Successful Return
+
+```
+[
+  {
+    "id": 11,
+    "uid": "egerhshserh",
+    "donation": 10,
+    "created_at": "2019-05-20 19:31:47"
+  }
+]
+```
+
+#### get schools
+
+```
+
+axios
+    .get(`https://luncher-1.herokuapp.com/api/home`)
+    .then(res => {
+        console.log(res.data)
+    })
+    .catch(err => {
+        console.log(err)
+    });
+```
+
+Successful Return
+
+```
+[
+  {
+    "id": 1,
+    "name": "Lambda School",
+    "address": "505 makebelieve Dr San Jose, CA 94345",
+    "funding": 1,
+    "balance": 10,
+    "uid": "f467StrA0ZZ8MAPoe2zcDQk53hO1",
+    "school_id": 1
+  },
+  {
+    "id": 2,
+    "name": "Diablo Valley College",
+    "address": "505 somewhere St San Pablo, CA 66863",
+    "funding": 0,
+    "balance": 4000,
+    "uid": "f467StrA0ZZ8MAPoe2zcDQk53hO2",
+    "school_id": 2
+  }
+]
 ```
