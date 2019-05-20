@@ -16,11 +16,7 @@ async function add(user) {
 }
 
 function get(id) {
-  return db("schools")
-    .join("school_profile", "schools.id", "school_profile.school_id")
-    .select("*")
-    .where("school_profile.id", id)
-    .first();
+  return db("school_profile");
 }
 
 function findById(id) {

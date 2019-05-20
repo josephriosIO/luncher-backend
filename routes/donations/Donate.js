@@ -16,21 +16,12 @@ router.get("/:id", async (req, res) => {
 });
 
 router.get("/transaction/:id", (req, res) => {
-  console.log(req.params.id);
-  if (req.params.id) {
-    transactionsDb("transactions")
-      .where("uid", "=", req.params.id)
-      .then(transactions => {
-        res.status(200).send(transactions);
-        transactionsDb("school_profile")
-          .where("uid", "=", req.params.id)
-          .select("balance", "name")
-          .then(ress => {
-            res.status(201).json(ress);
-          });
-      })
-      .catch(err => console.log(err.message));
-  }
+  transactionsDb("transactions")
+    .where("uid", "=", req.params.id)
+    .then(transactions => {
+      res.status(200).send(transactions);
+    })
+    .catch(err => console.log(err.message));
 });
 
 router.post("/donation/:id", (req, res) => {
