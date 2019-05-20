@@ -1,8 +1,9 @@
 const router = require("express").Router();
 const db = require("../../database/helpers/registerModels");
 const transactionsDb = require("../../database/dbConfig");
+const { authenticate } = require("../../auth/authenticate");
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", authenticate, async (req, res) => {
   try {
     const profile = await db.getProfile(req.params.id);
     if (!profile) {
@@ -15,7 +16,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.get("/transaction/:id", (req, res) => {
+router.get("/transaction/:id", authenticate, (req, res) => {
   transactionsDb("transactions")
     .where("uid", "=", req.params.id)
     .then(transactions => {

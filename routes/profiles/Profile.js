@@ -2,7 +2,7 @@ const router = require("express").Router();
 const db = require("../../database/helpers/profileModels");
 const { authenticate } = require("../../auth/authenticate");
 // post endpoint
-router.post("/", async (req, res) => {
+router.post("/", authenticate, async (req, res) => {
   try {
     const { name, address } = req.body;
     // if post doesn't include title or contents send error
@@ -17,7 +17,7 @@ router.post("/", async (req, res) => {
 });
 
 //get certain profile by id
-router.get("/:id", async (req, res) => {
+router.get("/:id", authenticate, async (req, res) => {
   try {
     const id = req.params.id;
     const profile = await db.findById(id);
@@ -34,7 +34,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // delete endpoint
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authenticate, async (req, res) => {
   try {
     const id = req.params.id;
     const deleteProfile = await db.remove(id);
@@ -55,7 +55,7 @@ router.delete("/:id", async (req, res) => {
 });
 
 //update endpoint
-router.put("/:id", async (req, res) => {
+router.put("/:id", authenticate, async (req, res) => {
   try {
     const id = req.params.id;
     const { name, address } = req.body;
