@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-const jwtKey = process.env.JWT_SECRET;
+const jwtKey = process.env.JWT_SECRET || "gshsbsr";
 
 // quickly see what this file exports
 module.exports = {
