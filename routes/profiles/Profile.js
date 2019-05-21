@@ -1,15 +1,20 @@
 const router = require("express").Router();
 const db = require("../../database/helpers/profileModels");
 const { authenticate } = require("../../auth/authenticate");
+const {
+  prepNewPost,
+  prepUpdatePost,
+  verifyPostOwner
+} = require("./middleware/");
 // post endpoint
-router.post("/", authenticate, async (req, res) => {
+router.post("/", authenticate, prepNewPost, async ({ newProfile }, res) => {
   try {
-    const { name, address } = req.body;
-    // if post doesn't include title or contents send error
-    if (!name || !address) {
-      res.status(400).json("Please provide missing fields for post");
-    }
-    const profile = await db.add(req.body);
+    // const { name, address } = req.body;
+    // // if post doesn't include title or contents send error
+    // if (!name || !address) {
+    //   res.status(400).json("Please provide missing fields for post");
+    // }
+    const profile = await db.add(newProfile);
     res.status(201).json(profile);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -17,9 +22,8 @@ router.post("/", authenticate, async (req, res) => {
 });
 
 //get certain profile by id
-router.get("/:id", authenticate, async (req, res) => {
+router.get("/:id", authenticate, async ({ params: { id } }, res) => {
   try {
-    const id = req.params.id;
     const profile = await db.findById(id);
 
     //if id doesn't exist send error
@@ -34,48 +38,49 @@ router.get("/:id", authenticate, async (req, res) => {
 });
 
 // delete endpoint
-router.delete("/:id", authenticate, async (req, res) => {
-  try {
-    const id = req.params.id;
-    const deleteProfile = await db.remove(id);
+router.delete(
+  "/:pid",
+  authenticate,
+  verifyPostOwner,
+  async ({ params: { pid } }, res) => {
+    try {
+      const deleteProfile = await db.remove(pid);
 
-    //if it doesnt contain the right id send error
-    if (deleteProfile <= 0) {
-      res
-        .status(404)
-        .json({ message: "The profile with the specified ID does not exist." });
-    } else {
-      res.status(200).json(deleteProfile);
+      //if it doesnt contain the right id send error
+      if (deleteProfile <= 0) {
+        res.status(404).json({
+          message: "The profile with the specified ID does not exist."
+        });
+      } else {
+        res.status(200).json(deleteProfile);
+      }
+    } catch (err) {
+      res.status(500).json({
+        errorMessage: err.message
+      });
     }
-  } catch (err) {
-    res.status(500).json({
-      errorMessage: err.message
-    });
   }
-});
+);
 
 //update endpoint
-router.put("/:id", authenticate, async (req, res) => {
-  try {
-    const id = req.params.id;
-    const { name, address } = req.body;
-
-    const updateProfile = await db.update(id, req.body);
-    if (updateProfile <= 0) {
-      res
-        .status(404)
-        .json({ message: "The post with the specified ID does not exist." });
-    }
-    if (!name || !address) {
-      res.status(400).json("Please provide missing fields.");
-    } else {
+router.put(
+  "/:id",
+  authenticate,
+  verifyPostOwner,
+  prepUpdatePost,
+  async ({ updated, pid }, res) => {
+    try {
+      const updateProfile = await db.update(pid, updated);
+      if (updateProfile <= 0) {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." });
+      }
       res.status(200).json(updateProfile);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
     }
-  } catch (err) {
-    res
-      .status(500)
-      .json({ error: "The post information could not be modified." });
   }
-});
+);
 
 module.exports = router;

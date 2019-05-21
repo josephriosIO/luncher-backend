@@ -22,7 +22,7 @@ exports.up = function(knex, Promise) {
 
       tbl.string("address", 256).notNullable();
 
-      tbl.boolean("funding").notNullable();
+      tbl.boolean("funding");
 
       tbl.integer("balance");
 
