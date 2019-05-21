@@ -51,7 +51,14 @@ function getBy(filter) {
     postFilter[`p.${key}`] = filter[key];
   }
   return db
-    .select("u.username", "p.id", "p.address", "p.name", "p.school_id")
+    .select(
+      "u.username",
+      "p.id",
+      "p.address",
+      "p.name",
+      "p.school_id",
+      "p.balance"
+    )
     .from("school_profile as p")
     .where(postFilter)
     .join("schools as u", { "u.id": "p.school_id" });

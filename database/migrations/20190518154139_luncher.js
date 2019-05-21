@@ -24,7 +24,7 @@ exports.up = function(knex, Promise) {
 
       tbl.boolean("funding");
 
-      tbl.integer("balance");
+      tbl.integer("balance").defaultTo(0);
 
       tbl
         .string("uid", 35)
