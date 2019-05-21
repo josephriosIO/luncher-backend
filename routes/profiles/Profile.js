@@ -2,12 +2,12 @@ const router = require("express").Router();
 const db = require("../../database/helpers/profileModels");
 const { authenticate } = require("../../auth/authenticate");
 const {
-  prepNewPost,
-  prepUpdatePost,
-  verifyPostOwner
+  prepNewProfile,
+  prepUpdateProfile,
+  verifyProfileOwner
 } = require("./middleware/");
 // post endpoint
-router.post("/", authenticate, prepNewPost, async ({ newProfile }, res) => {
+router.post("/", authenticate, prepNewProfile, async ({ newProfile }, res) => {
   try {
     // const { name, address } = req.body;
     // // if post doesn't include title or contents send error
@@ -41,7 +41,7 @@ router.get("/:id", authenticate, async ({ params: { id } }, res) => {
 router.delete(
   "/:pid",
   authenticate,
-  verifyPostOwner,
+  verifyProfileOwner,
   async ({ params: { pid } }, res) => {
     try {
       const deleteProfile = await db.remove(pid);
@@ -66,8 +66,8 @@ router.delete(
 router.put(
   "/:id",
   authenticate,
-  verifyPostOwner,
-  prepUpdatePost,
+  verifyProfileOwner,
+  prepUpdateProfile,
   async ({ updated, pid }, res) => {
     try {
       const updateProfile = await db.update(pid, updated);
