@@ -41,7 +41,7 @@ async function update(id, profile) {
 
 function remove(id) {
   return db("school_profile")
-    .where("id", Number(id))
+    .where({ id })
     .del();
 }
 

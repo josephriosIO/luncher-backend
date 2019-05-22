@@ -39,12 +39,12 @@ router.get("/:id", async ({ params: { id } }, res) => {
 
 // delete endpoint
 router.delete(
-  "/:pid",
+  "/:id",
   authenticate,
   verifyProfileOwner,
-  async ({ params: { pid } }, res) => {
+  async ({ params: { id } }, res) => {
     try {
-      const deleteProfile = await db.remove(pid);
+      const deleteProfile = await db.remove(id);
 
       //if it doesnt contain the right id send error
       if (deleteProfile <= 0) {
