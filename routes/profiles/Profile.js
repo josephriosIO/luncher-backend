@@ -22,7 +22,7 @@ router.post("/", authenticate, prepNewProfile, async ({ newProfile }, res) => {
 });
 
 //get certain profile by id
-router.get("/:id", authenticate, async ({ params: { id } }, res) => {
+router.get("/:id", async ({ params: { id } }, res) => {
   try {
     const profile = await db.findById(id);
 
