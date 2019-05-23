@@ -25,25 +25,24 @@ router.get("/transaction/:id", authenticate, (req, res) => {
     .catch(err => console.log(err.message));
 });
 
-router.post("/donation/:id", (req, res) => {
-  const pay = req.body;
-  console.log(req.body);
-  console.log(req.params.id);
-  transactionsDb("transactions")
-    .insert(pay)
-    .then(res1 => {
-      transactionsDb("school_profile")
-        .where("id", "=", req.params.id)
-        .select("balance")
-        .increment("balance", pay.donation)
-        .then(res2 => {
-          res.status(201).json({
-            message: `Donated $${pay.donation}.`
-          });
-        })
-        .catch(err => console.log(err.message));
-    })
-    .catch(err => console.log(err.message));
+router.post("/donation/:id", async (req, res) => {
+  try {
+    const pay = req.body;
+    console.log(req.body);
+    console.log(req.params.id);
+    await transactionsDb("transactions").insert(pay);
+
+    await transactionsDb("school_profile")
+      .where("id", "=", req.params.id)
+      .select("balance")
+      .increment("balance", pay.donation);
+
+    const profile = await db.getProfile(req.params.id);
+
+    res.status(200).json(profile);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 module.exports = router;
